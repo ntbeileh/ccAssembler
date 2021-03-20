@@ -388,7 +388,7 @@ vector<list<Node *> > repeatGraph::nonbranching(){
             continue;
         }
 
-        p.push_back(node); // current path to build
+        // p.push_back(node); // current path to build
         Node * curr=node;
         // Getting path from node
         while (true){
@@ -403,7 +403,9 @@ vector<list<Node *> > repeatGraph::nonbranching(){
             }
         }
         // Add current path to total paths
-        paths.push_back(p);
+        if (paths.size()>1){
+            paths.push_back(p);
+        }
         p.clear();
     }
     cout << "Nonbranching paths generated" << endl;
@@ -423,9 +425,13 @@ void repeatGraph::generateContigs() {
     if (paths.empty()) {
         return;
     }
-
+    cout << "nonbranching paths" << paths.size()<< endl;
     // For each nonbranching path
     for (auto p : paths) {
+
+        if (p.size()==1){
+            continue;
+        }
 
         string final=""; // final sequence
         Node * current=p.front();
@@ -458,7 +464,7 @@ void repeatGraph::generateContigs() {
 
         // Setting path -> single node
         current->setSeq(final);
-        current->deleteNext();
+        // current->deleteNext();
         // auto newNext=end->getNext();
 
         // Reassigning current->Next
@@ -467,18 +473,23 @@ void repeatGraph::generateContigs() {
             
         // }
 
-        current->setNext(end, get<1>(end->getPrev().front()), make_pair(final.length()-get<2>(end->getPrev().front()).first, final.length()),
-             get<3>(end->getPrev().front()));
-        end->setPrev(current, get<1>(end->getPrev().front()), make_pair(final.length()-get<2>(end->getPrev().front()).first, final.length()),
-             get<3>(end->getPrev().front()));
+
+        
+
+        // end->deletePrev();
         //error might come from here
         for (auto node : p){
-
+            // cout << "got here" << endl;
             current->addId(node->getID()[0]);
-            removeNode(node);
             this->allNodes.erase(remove(this->allNodes.begin(), this->allNodes.end(), node), this->allNodes.end());
-            //delete node;
+            // removeNode(node);
+            delete node;
         }
+        current->deleteNext();
+        current->setNext(end, get<1>(end->getPrev().front()), make_pair(final.length()-get<1>(end->getPrev().front()).length(), final.length()),
+             get<3>(end->getPrev().front()));
+        end->deletePrev();
+        end->setPrev(current, get<1>(current->getNext().front()), get<2>(current->getNext().front()), get<3>(current->getNext().front()));
 
     }
     cout << "Contigs generated" << endl;

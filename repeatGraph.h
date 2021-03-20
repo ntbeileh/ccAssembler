@@ -21,9 +21,9 @@ class repeatGraph
 
     //suffix, prefix
     vector <Node *> allNodes; //the graph, may need to be changed to unordered_map
-    vector <Node *> oneinoneout;   // all 1-in-1-out pointers
-    vector <Node *> starts;       // source nodes
-    vector <Node *> ends;     // sink nodes
+    vector <Node *> oneinoneout;   //
+    vector <Node *> starts;       //nodes that have no parents
+    vector <Node *> ends;
     list<Node *> assemblyNode; // list of best assembly nodes
     list<tuple<Node *, string, pair<int, int>, pair<int, int>>> assemblyEdges; 
   public: 

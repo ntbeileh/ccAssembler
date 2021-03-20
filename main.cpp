@@ -25,21 +25,21 @@ int main(int argc, char **argv)
     int x = tempoutput.length();
     char output[x + 1];
     strcpy(output, tempoutput.c_str());
-    sprintf(command, "minimap2 -H -k19 -Xw5 -m100 -n -g10000 -m500 --max-chain-skip 25 -c -t 4 --for-only %s %s -o %s", argv[1], argv[1], output);
+    sprintf(command, "minimap2 -H -k19 -Xw5 -n -g10000 -m9000 --max-chain-skip 25 -c -t 4 --for-only %s %s -o %s", argv[1], argv[1], output);
     system(command);
  
     // decompressing the compressed reads into a decompressed reads.fa file
-    char anothercommand[100];
-    string tempfasta = "reads.fa";
-    int n = tempfasta.length();
-    char fasta[n + 1];
-    strcpy(fasta, tempfasta.c_str());
-    sprintf(anothercommand, "zcat %s > %s", argv[1], fasta);
-    system(anothercommand);
+    // char anothercommand[100];
+    // string tempfasta = "reads.fa";
+    // int n = tempfasta.length();
+    // char fasta[n + 1];
+    // strcpy(fasta, tempfasta.c_str());
+    // sprintf(anothercommand, "zcat %s > %s", argv[1], fasta);
+    // system(anothercommand);
  
     // Getting the reads from the FASTA input
     unordered_map<string, string> reads;
-    fasta_to_map(tempfasta, reads);
+    fasta_to_map(argv[1], reads);
     
     // Creating the repeat graph
     repeatGraph overlapGraph = repeatGraph(tempoutput, reads);
