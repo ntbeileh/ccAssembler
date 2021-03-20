@@ -5,7 +5,7 @@ build/Testing/Temporary/LastTest.log
 ./CMakeCache.txt
 ./CMakeLists.txt
 CTestTestfile.cmake
-googletest
+# googletest
 CMakeFiles
 build
 bin
